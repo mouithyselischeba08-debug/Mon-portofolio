@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon portofolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <style> :root {
+      --bg: #0a0a0f;
+      --border: #ffffff10;
+      --text: #f0ede8;
+      --muted: #888;
+      --accent1: #e8c97e;
+      --accent2: #7ec8e3;
+    }
+ 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+ 
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+ 
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: #0a0a0f80;
+      border-bottom: 1px solid var(--border);
+    }
+ 
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent1);
+      text-decoration: none;
+    }
+ 
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+ 
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+ 
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 2rem;
+      overflow: hidden;
+    }
+ 
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, #e8c97e08 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 80% 30%, #7ec8e308 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 50% 80%, #c97eb008 0%, transparent 70%);
+    }
+ 
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent1);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+ 
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+    }
+ 
+    .hero h1 span {
+      display: block;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+ 
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 500px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+ 
+    .hero-members {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+ 
+    .hero-members a {
+      padding: 0.75rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+      background: #ffffff06;
+    }
+ 
+    .hero-members a:first-child:hover {
+      border-color: var(--accent1);
+      color: var(--accent1);
+      background: #e8c97e0a;
+    }
+ 
+    .hero-members a:last-child:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #7ec8e30a;
+    }
+ 
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+ 
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent1), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+ 
+    /* CARDS MEMBRES */
+    .members-section {
+      padding: 6rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+ 
+    .member-card {
+      background: #12121a;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+ 
+    .member-card.m1::before { background: linear-gradient(90deg, var(--accent1), transparent); }
+    .member-card.m2::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+ 
+    .member-card:hover { border-color: #ffffff20; transform: translateY(-4px); }
+ 
+    .card-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+ 
+    .m1 .card-num { color: var(--accent1); }
+    .m2 .card-num { color: var(--accent2); }
+ 
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+ 
+    .card-role {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+ 
+    .m1 .card-role { color: var(--accent1); }
+    .m2 .card-role { color: var(--accent2); }
+ 
+    .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+ 
+    .card-arrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+ 
+    .m1 .card-arrow { color: var(--accent1); }
+    .m2 .card-arrow { color: var(--accent2); }
+ 
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+ 
+    footer span { color: var(--accent1); }
+ 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+ 
+    @media (max-width: 600px) {
+      .members-section { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }</style>
+</head>
+<body>
+    <nav>
+        <a class="nav-logo" href="index.HTML"> Portofolio/a>
+            <ul class="nav-links">
+                <li> <a href="index.HTML"> acceuil/a> </li>
+                <li> <a href="index1.HTML"> bébé lili/a> </li>
+                <li> <a href="index2.HTML"> Djoun.JR /a> </li>  
+            </ul>
+    </nav>
+    <section class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-label">Portfolio Collectif · 2025</p>
+  <h1>Notre<span>Portfolio</span></h1>
+  <p class="hero-sub">Deux parcours, une vision commune. Découvrez nos expériences académiques et personnelles.</p>
+  <div class="hero-members">
+    <a href="index1.html">→ bébé lili</a>
+    <a href="index2.html">→ Djoun.JR</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+ 
+<div class="members-section">
+  <a class="member-card m1" href="index1.html">
+    <p class="card-num">01 / Membre</p>
+    <h2 class="card-name">bébé<br>lili</h2>
+    <p class="card-role">Développeur Web · Étudiant</p>
+    <p class="card-desc">Passionné par le développement web et les nouvelles technologies. Actuellement en Licence Informatique.</p>
+    <p class="card-arrow">Voir le profil →</p>
+  </a>
+  <a class="member-card m2" href="index2.html">
+    <p class="card-num">02 / Membre</p>
+    <h2 class="card-name"> Djoun<br> JR</h2>
+    <p class="card-role">Designer UI/UX · Étudiante</p>
+    <p class="card-desc">Créative et analytique, je conçois des interfaces intuitives. Étudiante en Master Design Numérique.</p>
+    <p class="card-arrow">Voir le profil →</p>
+  </a>
+</div>
+
+
+</body>
+</html>

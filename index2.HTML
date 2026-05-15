@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Membre 2 · Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #ffffff10;
+      --text: #f0ede8;
+      --muted: #888;
+      --accent: #7ec8e3;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: #0a0a0f80;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    /* BG GLOW */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 80% at 10% 80%, #7ec8e306, transparent);
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 7rem 2rem 4rem;
+    }
+
+    /* PROFILE HEADER */
+    .profile-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 4rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.2s forwards;
+    }
+
+    .profile-avatar {
+      width: 180px;
+      height: 220px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: var(--muted);
+    }
+
+    .avatar-placeholder .icon { font-size: 3rem; }
+    .avatar-placeholder span { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .profile-number {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .profile-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-title { font-size: 1.1rem; color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
+
+    .profile-bio {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 540px;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .tag {
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* GRID */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.9s forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.5s; }
+    .card:nth-child(4) { animation-delay: 0.6s; }
+    .card:nth-child(5) { animation-delay: 0.7s; }
+
+    .card:hover { border-color: #ffffff20; }
+    .card.wide { grid-column: 1 / -1; }
+
+    .card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 1.25rem; }
+    .timeline-item { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+
+    .timeline-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 0.4rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .timeline-year { font-size: 0.7rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+    .timeline-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .timeline-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* SKILLS */
+    .skills-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .skill-item { display: flex; flex-direction: column; gap: 0.4rem; }
+    .skill-header { display: flex; justify-content: space-between; font-size: 0.85rem; }
+    .skill-pct { color: var(--muted); font-size: 0.8rem; }
+    .skill-bar { height: 3px; background: #ffffff0a; border-radius: 2px; overflow: hidden; }
+    .skill-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      animation: barGrow 1.5s ease-out forwards;
+    }
+
+    /* QUOTE */
+    .quote-block { border-left: 3px solid var(--accent); padding-left: 1.5rem; margin: 1rem 0; }
+    .quote-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; line-height: 1.6; }
+    .quote-author { font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; }
+
+    /* MEDIA */
+    .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+
+    .media-item {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.3s;
+    }
+
+    .media-item:hover { border-color: var(--accent); }
+    .media-item .media-icon { font-size: 1.8rem; }
+    .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+
+    /* CONTACTS */
+    .contacts { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      background: var(--bg);
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+      transition: color 0.3s;
+    }
+    .back-btn:hover { color: var(--accent); }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      margin-top: 4rem;
+    }
+    footer span { color: var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes barGrow { from { width: 0; } }
+
+    @media (max-width: 768px) {
+      .profile-header { grid-template-columns: 1fr; }
+      .content-grid   { grid-template-columns: 1fr; }
+      .media-grid     { grid-template-columns: repeat(2, 1fr); }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">Portfolio</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="index1.html">Membre 1</a></li>
+    <li><a href="index2.html" class="active">Membre 2</a></li>
+  </ul>
+</nav>
+
+<div class="main">
+
+  <a class="back-btn" href="index.html">← Retour à l'accueil</a>
+
+  <!-- PROFILE HEADER -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <!-- 🖼️ Remplacez par votre photo : <img src="photo-membre2.jpg" alt="Membre 2" /> -->
+      <div class="avatar-placeholder">
+        <span class="icon">📷</span>
+        <span>Votre photo</span>
+      </div>
+    </div>
+    <div class="profile-info">
+      <p class="profile-number">02 / Membre</p>
+      <h1 class="profile-name">Prénom<br>Nom</h1>
+      <p class="profile-title">Designer UI/UX · Étudiante</p>
+      <p class="profile-bio">
+        Créative et analytique, je conçois des interfaces intuitives qui placent l'utilisateur au cœur de l'expérience. Étudiante en Master Design Numérique à [École], je combine design et code.
+      </p>
+      <div class="profile-tags">
+        <span class="tag">Figma</span>
+        <span class="tag">UI/UX</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Illustrator</span>
+        <span class="tag">Dakar, SN</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENU -->
+  <div class="content-grid">
+
+    <!-- Cursus académique -->
+    <div class="card">
+      <div class="card-accent"></div>
+      <p class="card-label">Parcours Académique</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2023 – Présent</p>
+            <p class="timeline-title">Master Design Numérique</p>
+            <p class="timeline-desc">École Supérieure [Nom] · Spécialité UX/UI Design</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2020 – 2023</p>
+            <p class="timeline-title">Licence Arts Appliqués</p>
+            <p class="timeline-desc">Université [Nom] · Mention Très Bien</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2019 – 2020</p>
+            <p class="timeline-title">Baccalauréat Série L</p>
+            <p class="timeline-desc">Lycée [Nom] · Mention Assez Bien</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compétences -->
+    <div class="card">
+      <div class="card-accent"></div>
+      <p class="card-label">Compétences</p>
+      <div class="skills-list">
+        <div class="skill-item">
+          <div class="skill-header"><span>Figma / XD</span><span class="skill-pct">92%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>UI/UX Design</span><span class="skill-pct">88%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Adobe Illustrator</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>HTML / CSS</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Photoshop</span><span class="skill-pct">75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expériences -->
+    <div class="card">
+      <div class="card-accent"></div>
+      <p class="card-label">Expériences & Projets</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2024</p>
+            <p class="timeline-title">Refonte App Mobile</p>
+            <p class="timeline-desc">Redesign complet d'une application de livraison. +40% d'engagement utilisateur.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2023</p>
+            <p class="timeline-title">Freelance Designer</p>
+            <p class="timeline-desc">Création d'identités visuelles pour 5 startups africaines.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div>
+            <p class="timeline-year">2022</p>
+            <p class="timeline-title">Concours Design Africain</p>
+            <p class="timeline-desc">Lauréate du concours panafricain de design UI avec le projet "KiraKit".</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- À propos -->
+    <div class="card">
+      <div class="card-accent"></div>
+      <p class="card-label">À Propos</p>
+      <div class="quote-block">
+        <p class="quote-text">"Le bon design est évident. Le grand design est transparent."</p>
+        <p class="quote-author">— Joe Sparano</p>
+      </div>
+      <br>
+      <p class="card-label">Centres d'intérêt</p>
+      <div class="profile-tags">
+        <span class="tag">🎨 Art</span>
+        <span class="tag">📸 Photographie</span>
+        <span class="tag">🎭 Théâtre</span>
+        <span class="tag">✈️ Voyages</span>
+        <span class="tag">🌱 Écologie</span>
+      </div>
+      <br>
+      <p class="card-label">Contact</p>
+      <div class="contacts">
+        <a class="contact-link" href="mailto:email@example.com">✉️ Email</a>
+        <a class="contact-link" href="https://behance.net/" target="_blank">⬡ Behance</a>
+        <a class="contact-link" href="https://linkedin.com/" target="_blank">in LinkedIn</a>
+      </div>
+    </div>
+
+    <!-- Galerie -->
+    <div class="card wide">
+      <div class="card-accent"></div>
+      <p class="card-label">Galerie · Photos & Vidéos</p>
+      <div class="media-grid">
+        <div class="media-item">
+          <span class="media-icon">🖼️</span>
+          <span>Remplacer par<br>votre image</span>
+          <!-- <img src="photo1.jpg" alt=""> -->
+        </div>
+        <div class="media-item">
+          <span class="media-icon">🎬</span>
+          <span>Remplacer par<br>votre vidéo</span>
+          <!-- <video controls src="video1.mp4"></video> -->
+        </div>
+        <div class="media-item">
+          <span class="media-icon">🖼️</span>
+          <span>Remplacer par<br>votre image</span>
+          <!-- <img src="photo2.jpg" alt=""> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
